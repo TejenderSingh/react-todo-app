@@ -1,4 +1,4 @@
-# who-dares-wins-vue
+# React Todo
 
 A Todo app with ReactJS.
 
@@ -12,12 +12,6 @@ npm install
 
 ```
 npm start
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
 ```
 
 ## Built With
