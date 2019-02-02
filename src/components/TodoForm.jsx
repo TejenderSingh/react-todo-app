@@ -31,7 +31,7 @@ class TodoForm extends Component {
               value={this.state.text}
               name="text"
               onChange={e => this.handleChange(e)}
-              placeholder="Buy Laptop..."
+              placeholder="What needs to be done?"
             />
           </p>
           <p className="control">

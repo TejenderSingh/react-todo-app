@@ -9,16 +9,15 @@ import Button from "./components/Button";
 class App extends Component {
   state = {
     todos: [
-      { id: 1, title: "Buy Bicycle", completed: false },
-      { id: 2, title: "Wash Car", completed: false },
-      { id: 3, title: "Walk Dog", completed: false }
+      { id: 1, title: "Buy grocery", completed: false },
+      { id: 2, title: "Redesign website", completed: true },
+      { id: 3, title: "Walk the Dog", completed: false }
     ],
-    todosToShow: "all",
-    toggleAllComplete: true
+    todosToShow: "all"
   };
 
   handleAddTodo = todo => {
-    this.setState(state => ({ todos: [todo, ...state.todos] }));
+    this.setState(state => ({ todos: [...state.todos, todo] }));
   };
   handleDeleteTodo = id => {
     const todos = this.state.todos.filter(todo => todo.id !== id);
@@ -39,18 +38,20 @@ class App extends Component {
       todos: state.todos.filter(todo => !todo.completed)
     }));
   };
-  handleCheckAll = () => {
+  handleCheckAll = e => {
+    e.persist();
     this.setState(state => ({
       todos: state.todos.map(todo => ({
         ...todo,
-        completed: state.toggleAllComplete
-      })),
-      toggleAllComplete: !state.toggleAllComplete
+        completed: e.target.checked
+      }))
     }));
   };
-
+  activeTodos = () => {
+    return this.state.todos.filter(todo => !todo.completed);
+  };
   render() {
-    const { todos, todosToShow, toggleAllComplete } = this.state;
+    const { todos, todosToShow } = this.state;
     let newTodos = [];
     if (todosToShow === "all") {
       newTodos = todos;
@@ -60,9 +61,9 @@ class App extends Component {
       newTodos = todos.filter(todo => todo.completed);
     }
 
-    let msg, btn;
-    if (todos.length !== 0) {
-      msg = <Message message={`Total Todos: ${todos.length}`} />;
+    let msg, btn, mainCheckbox;
+    if (todos.length) {
+      msg = <Message message={`Todos left: ${this.activeTodos().length}`} />;
       btn = (
         <section style={{ marginTop: "2rem" }}>
           <div className="buttons has-addons is-centered">
@@ -70,25 +71,16 @@ class App extends Component {
               color={"is-primary"}
               name={"All"}
               click={() => this.handleTodoToShow("all")}
-              todoLength={""}
             />
             <Button
               color={"is-link"}
               name={"Active"}
               click={() => this.handleTodoToShow("active")}
-              todoLength={todos.filter(todo => !todo.completed).length}
             />
             <Button
               color={"is-success"}
               name={"Completed"}
               click={() => this.handleTodoToShow("completed")}
-              todoLength={todos.filter(todo => todo.completed).length}
-            />
-            <Button
-              color={"is-warning"}
-              name={toggleAllComplete ? "Check All" : "Uncheck All"}
-              click={this.handleCheckAll}
-              todoLength={""}
             />
           </div>
           {todos.some(todo => todo.completed) ? (
@@ -103,19 +95,41 @@ class App extends Component {
           ) : null}
         </section>
       );
+      mainCheckbox = (
+        <div
+          style={{
+            width: "60%",
+            maxWidth: 600,
+            margin: "0 auto",
+            paddingLeft: 10
+          }}
+        >
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              onChange={this.handleCheckAll}
+              checked={this.activeTodos().length ? false : true}
+              style={{ margin: "10px 5px 0 0" }}
+            />
+            {this.activeTodos().length ? "Check all" : "Uncheck all"}
+          </label>
+        </div>
+      );
     }
+
     return (
       <React.Fragment>
         <Header />
+        {todos.length === 0 && <Message message={"Add some Todos."} />}
+        {msg}
         <section className="container">
-          {todos.length === 0 && <Message message={"Add some Todos."} />}
-          {msg}
           <TodoForm handleSubmit={this.handleAddTodo} />
           <TodoList
             todos={newTodos}
             onDelete={this.handleDeleteTodo}
             toggleComplete={this.handleToggleComplete}
           />
+          {mainCheckbox}
           {btn}
         </section>
       </React.Fragment>

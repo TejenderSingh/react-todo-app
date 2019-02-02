@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-const Button = ({ name, color, click, todoLength }) => {
+const Button = ({ name, color, click }) => {
   return (
-    <button onClick={click} className={`button ${color} is-selected`}>
-      {` ${name} ${todoLength} `}
+    <button onClick={click} className={`button ${color}`}>
+      {name}
     </button>
   );
 };
@@ -11,7 +11,6 @@ const Button = ({ name, color, click, todoLength }) => {
 Button.propTypes = {
   name: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
-  click: PropTypes.func.isRequired,
-  todoLength: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  click: PropTypes.func
 };
 export default Button;

@@ -2,43 +2,48 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Todo = ({ todo, toggleComplete, handleDelete }) => {
-  const pStyle = () => {
-    return {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      width: "80%",
-      maxWidth: 600,
-      background: "#ecf0f1",
-      borderRadius: "0.2em",
-      textDecoration: todo.completed ? "line-through" : "none"
-    };
+  const divStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "60%",
+    marginBottom: 2,
+    padding: 10,
+    maxWidth: 600,
+    background: "#ecf0f1",
+    borderRadius: "0.2em"
   };
   return (
-    <React.Fragment>
-      <div style={rootDiv}>
-        <div style={pStyle()}>
+    <div style={rootDiv}>
+      <div style={divStyle}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <input
+            type="checkbox"
+            checked={todo.completed}
+            onChange={() => toggleComplete(todo)}
+            style={{ marginRight: 5, cursor: "pointer" }}
+          />
           <p
-            onClick={() => toggleComplete(todo)}
-            style={{ padding: 10, cursor: "pointer" }}
+            style={{
+              color: todo.completed ? "grey" : "",
+              textDecoration: todo.completed ? "line-through" : "none"
+            }}
           >
             {todo.title}
           </p>
-          <button
-            onClick={() => handleDelete(todo.id)}
-            className="delete is-medium"
-            style={{ marginRight: 10 }}
-          />
         </div>
+        <button
+          onClick={() => handleDelete(todo.id)}
+          className="delete is-medium"
+        />
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 
 const rootDiv = {
   display: "flex",
-  justifyContent: "center",
-  marginBottom: 2
+  justifyContent: "center"
 };
 
 Todo.propTypes = {
