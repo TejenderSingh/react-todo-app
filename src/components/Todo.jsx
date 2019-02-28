@@ -1,18 +1,7 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 
 const Todo = ({ todo, toggleComplete, handleDelete }) => {
-  const divStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "60%",
-    marginBottom: 2,
-    padding: 10,
-    maxWidth: 600,
-    background: "#ecf0f1",
-    borderRadius: "0.2em"
-  };
   return (
     <div style={rootDiv}>
       <div style={divStyle}>
@@ -41,6 +30,17 @@ const Todo = ({ todo, toggleComplete, handleDelete }) => {
   );
 };
 
+const divStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "60%",
+  marginBottom: 2,
+  padding: 10,
+  maxWidth: 600,
+  background: "#ecf0f1",
+  borderRadius: "0.2em"
+};
 const rootDiv = {
   display: "flex",
   justifyContent: "center"

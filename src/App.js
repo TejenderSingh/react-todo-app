@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import "./App.css";
-import TodoForm from "./components/TodoForm";
-import TodoList from "./components/TodoList";
+import Button from "./components/Button";
 import Header from "./components/Header";
 import Message from "./components/Message";
-import Button from "./components/Button";
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
 
 class App extends Component {
   state = {
     todos: [
       { id: 1, title: "Buy grocery", completed: false },
       { id: 2, title: "Redesign website", completed: true },
-      { id: 3, title: "Walk the Dog", completed: false }
+      { id: 3, title: "Walk the dog", completed: false }
     ],
     todosToShow: "all"
   };
@@ -48,7 +48,7 @@ class App extends Component {
     }));
   };
   activeTodos = () => {
-    return this.state.todos.filter(todo => !todo.completed);
+    return this.state.todos.filter(todo => !todo.completed).length;
   };
   render() {
     const { todos, todosToShow } = this.state;
@@ -63,7 +63,7 @@ class App extends Component {
 
     let msg, btn, mainCheckbox;
     if (todos.length) {
-      msg = <Message message={`Todos left: ${this.activeTodos().length}`} />;
+      msg = <Message message={`Todos left: ${this.activeTodos()}`} />;
       btn = (
         <section style={{ marginTop: "2rem" }}>
           <div className="buttons has-addons is-centered">
@@ -108,10 +108,10 @@ class App extends Component {
             <input
               type="checkbox"
               onChange={this.handleCheckAll}
-              checked={this.activeTodos().length ? false : true}
+              checked={this.activeTodos() ? false : true}
               style={{ margin: "10px 5px 0 0" }}
             />
-            {this.activeTodos().length ? "Check all" : "Uncheck all"}
+            {this.activeTodos() ? "Check all" : "Uncheck all"}
           </label>
         </div>
       );

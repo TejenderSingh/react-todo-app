@@ -1,47 +1,66 @@
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import shortId from "shortid";
-import PropTypes from "prop-types";
 
 class TodoForm extends Component {
-  state = { text: "" };
+  state = { text: "", textError: "" };
   handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
   };
+  validate = () => {
+    let textError = "";
+    if (!this.state.text) {
+      textError = "Please enter some text";
+    }
+    if (textError) {
+      this.setState({ textError });
+      return false;
+    }
+    return true;
+  };
   handleSubmit = e => {
     e.preventDefault();
-    this.props.handleSubmit({
-      id: shortId.generate(),
-      title: this.state.text,
-      completed: false
-    });
-    this.setState({ text: "" });
+    const isValid = this.validate();
+    if (isValid) {
+      this.props.handleSubmit({
+        id: shortId.generate(),
+        title: this.state.text,
+        completed: false
+      });
+      this.setState({ text: "", textError: "" });
+    }
   };
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <div
-          className="field is-grouped is-grouped-centered handleForm"
-          style={{ margin: "3rem 0" }}
-        >
-          <p className="control">
+        <div style={{ margin: "3rem 0" }}>
+          <div className="field is-grouped is-grouped-centered handleForm">
+            <p className="control">
+              <input
+                className="input is-medium is-rounded"
+                value={this.state.text}
+                name="text"
+                onChange={e => this.handleChange(e)}
+                placeholder="What needs to be done?"
+              />
+            </p>
             <input
-              className="input is-medium is-rounded"
-              value={this.state.text}
-              name="text"
-              onChange={e => this.handleChange(e)}
-              placeholder="What needs to be done?"
-            />
-          </p>
-          <p className="control">
-            <button
-              onClick={this.handleSubmit}
               className="button is-info is-outlined is-medium is-rounded mgTop"
-            >
-              Add Todo
-            </button>
-          </p>
+              type="submit"
+              value="Add Todo"
+            />
+          </div>
+          <div
+            style={{
+              color: "red",
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            {this.state.textError}
+          </div>
         </div>
       </form>
     );
